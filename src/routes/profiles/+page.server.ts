@@ -1,6 +1,7 @@
 // import { error } from '@sveltejs/kit';
 import { createPool, sql } from '@vercel/postgres'
-import { POSTGRES_URL } from '$env/static/private'
+// import { POSTGRES_URL } from '$env/static/private'
+let POSTGRES_URL = "postgres://default:C7Ml5YwWPSsg@ep-steep-dust-a16abr2f-pooler.ap-southeast-1.aws.neon.tech:5432/verceldb?sslmode=require"
 
 export async function load() {
   const db = createPool({ connectionString: POSTGRES_URL })
@@ -64,21 +65,21 @@ async function seed() {
 /** @type {import('./$types').Actions} */
 export const actions = {
 	
-  // update: async ({ request }) => {
-  //   const data = await request.formData();
-  //   const db = createPool({ connectionString: POSTGRES_URL })
-  //   const client = await db.connect();
+  update: async ({ request }) => {
+    const data = await request.formData();
+     const db = createPool({ connectionString: POSTGRES_URL })
+    const client = await db.connect();
 
-  //   const email = data.get('email');
-	// 	const name = data.get('name');
+     const email = data.get('email');
+		const name = data.get('name');
 
-  //   const updateUser = await client.sql`
-  //   UPDATE names
-  //   SET email = ${email}, name = ${name}
-  //   WHERE     ;`
+    const updateUser = await client.sql`
+    UPDATE names
+    SET email = ${email}, name = ${name}
+     WHERE id = ${id};`
 	
-	// 	return { success: true };
-	// },
+		return { success: true };
+	 },
 
   delete: async ({ request }) => {
     const data = await request.formData();
@@ -110,6 +111,3 @@ export const actions = {
     return { success: true };
 	}
 };
-
-
-
